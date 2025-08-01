@@ -1,0 +1,4 @@
+ipykernel
+python-dotenv
+google-adk
+litellm
