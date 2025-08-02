@@ -1,0 +1,29 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "adk_a2a_lab"
+version = "0.1.0"
+description = "ADK Agent-to-Agent Lab with sentiment analysis capabilities"
+requires-python = ">=3.8"
+dependencies = [
+    "google-adk",  # For ADK agent functionality
+    "python-dotenv",  # For environment variable management
+    "litellm",  # For LLM integration
+]
+
+[tool.hatch.build.targets.wheel]
+packages = [
+    "src/my_adk",
+    "src/my_a2a",
+]
+
+[tool.hatch.build]
+packages = [
+    "src/my_adk",
+    "src/my_a2a",
+]
+
+[tool.hatch.metadata]
+allow-direct-references = true

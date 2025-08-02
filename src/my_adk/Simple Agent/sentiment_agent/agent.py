@@ -1,16 +1,5 @@
 from google.adk.agents import Agent
-from google.adk.models.lite_llm import LiteLlm
-import os
-from dotenv import load_dotenv
-
-# Load environment variables from .env file
-load_dotenv()
-
-# Initialize the LiteLlm model with the Groq API key and base URL
-model = LiteLlm(
-    model="groq/llama3-8b-8192",
-    api_key=os.getenv("GROQ_API_KEY"),
-)
+from my_adk.llm import model
 
 # Create the SentimentAgent with the LiteLlm model
 agent = Agent(
