@@ -1,1 +1,125 @@
-# adk-a2a-lab
+# ADK and Agent-to-Agent (A2A) Lab
+
+This repository serves as a learning lab for two key technologies:
+1. Google's Agent Development Kit (ADK)
+2. Agent-to-Agent (A2A) Interactions [Coming Soon]
+
+## Quick Start
+
+### Environment Setup
+
+1. Create a new conda environment:
+```bash
+conda create -n adk-a2a python=3.12
+conda activate adk-a2a
+```
+
+2. Install the project:
+```bash
+pip install -e .
+```
+
+3. Set up your API key (we use Groq for examples):
+```bash
+export GROQ_API_KEY='your-groq-api-key'
+```
+Make sure to update `llm/model.py` (within `src/my_adk` and `src/my_a2a`) to integrate your preferred LLM model.
+
+## Part 1: Getting Started with ADK
+
+### What is ADK?
+
+ADK (Agent Development Kit) is Google's framework for building AI agents. Think of it as a toolkit that helps you:
+- Create agents that understand natural language
+- Build conversational memory into your agents
+- Structure agent responses consistently
+- Connect agents to language models (like GPT-4, Gemini, etc.)
+
+### Why Use ADK?
+
+- **Simplified Development**: Built-in state management and LLM integration
+- **Structured Interactions**: Clear patterns for handling user inputs and agent responses
+- **Production Ready**: Designed for both prototypes and production systems
+- **Extensible**: Easy to customize and expand functionality
+
+## Repository Structure
+
+```
+src/
+├── my_adk/          # ADK Implementation 
+└── my_a2a/          # A2A Implementation 
+```
+
+### Available Examples
+- Simple Sentiment Analysis Agent
+- Stateful Expense Manager Agent
+
+## Understanding ADK
+
+### Core Building Blocks
+
+1. **Agents**
+   - Your AI assistants that process user requests
+   - Can be simple (stateless) or remember conversations (stateful)
+   - Connected to language models like GPT-4 or Gemini
+
+2. **Sessions**
+   - Like a conversation memory
+   - Remembers important information between interactions
+   - Keeps track of user-specific details
+
+3. **Runners**
+   - The "manager" that coordinates everything - sessions, agents etc.
+   - Makes sure messages get to the right place
+   - Handles the conversation flow
+
+4. **Models**
+   - The AI brains behind your agents
+   - Process text and generate responses
+   - Can be configured for different needs
+
+### Types of Agents You Can Build
+
+1. **Simple (Stateless) Agents**
+   - Perfect for quick, one-off tasks
+   - Each request is independent
+   - Like asking for the weather each time
+
+2. **Stateful Agents**
+   - Remember previous interactions
+   - Can handle complex tasks over time
+   - Like a personal assistant that tracks your tasks
+
+### Tips for Building Agents
+
+1. **Planning Your Agent**
+   - Decide what your agent needs to remember
+   - Plan how it should respond
+   - Keep instructions clear and specific
+
+2. **Testing**
+   - Start with simple interactions
+   - Test edge cases
+   - Verify state management works
+
+3. **Best Practices**
+   - Write clear instructions for your agent
+   - Structure responses consistently
+   - Handle errors gracefully
+
+## Getting Help
+
+- Check the `examples` directory for working code
+- Read the comments in the code for detailed explanations
+- Visit [ADK Documentation](https://developers.google.com/adk) for official docs
+
+## Contributing
+
+Feel free to:
+1. Try the examples and give feedback
+2. Suggest improvements
+3. Report any issues you find
+
+## License
+
+This project is licensed under the terms of the LICENSE file included in the repository.
