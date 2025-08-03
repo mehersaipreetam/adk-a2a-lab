@@ -103,12 +103,6 @@ src/
    - Structure responses consistently
    - Handle errors gracefully
 
-## Getting Help
-
-- Check the `examples` directory for working code
-- Read the comments in the code for detailed explanations
-- Visit [ADK Documentation](https://developers.google.com/adk) for official docs
-
 ## Contributing
 
 Feel free to:
