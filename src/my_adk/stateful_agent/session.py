@@ -29,6 +29,8 @@ async def main():
         }
     )
 
+    print("Session created with initial state:", expense_session.id)
+
     runner = Runner(
         agent=expense_manager_agent,
         app_name="expense_manager_app",
@@ -47,7 +49,8 @@ async def main():
             role="user", parts=[types.Part(text=input_text)]
         )
 
-        for event in runner.run(
+        # Google adk suggests using run_async for to handle events in prod - run is for local alone
+        async for event in runner.run_async(
             user_id="example_user",
             session_id="session_1",
             new_message=new_message,
