@@ -1,8 +1,8 @@
-# ADK and Agent-to-Agent (A2A) Lab
+# Agent Development Kit (ADK) and Agent-to-Agent (A2A) Lab
 
 This repository serves as a learning lab for two key technologies:
 1. Google's Agent Development Kit (ADK)
-2. Agent-to-Agent (A2A) Interactions [Coming Soon]
+2. Agent-to-Agent (A2A) Protocol
 
 ## Quick Start
 
