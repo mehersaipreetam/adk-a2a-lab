@@ -16,14 +16,14 @@ async def main():
         query_session_id = input("Enter session ID: ").strip()
 
         if not query_user_id or not query_session_id:
-            print("Error: User ID and Session ID cannot be empty")
+            print("\nError: User ID and Session ID cannot be empty")
             return
 
 
         try:
             # Check if session already exists
             if await session_service_stateful.get_session(app_name="expense_manager_app", user_id=query_user_id, session_id=query_session_id):
-                print(f"Session already exists for User: {query_user_id}, Session: {query_session_id}")
+                print(f"\nSession already exists for User: {query_user_id}, Session: {query_session_id}")
             else:
                 expense_session = await session_service_stateful.create_session(
                     app_name="expense_manager_app",
@@ -48,7 +48,7 @@ async def main():
                 print(f"\nSession- {expense_session.id} created successfully!")
 
         except Exception as e:
-            print(f"Error creating session: {str(e)}")
+            print(f"\nError creating session: {str(e)}")
             return
 
         runner = Runner(
@@ -80,8 +80,8 @@ async def main():
                         response_text = event.content.parts[0].text
                         print("Agent Response:", response_text)
         except Exception as e:
-            print(f"Error processing query: {str(e)}")
-            print("Please try again with valid user and session IDs")
+            print(f"\nError processing query: {str(e)}")
+            print("\nPlease try again with valid user and session IDs")
 
 if __name__ == "__main__":
     asyncio.run(main())
