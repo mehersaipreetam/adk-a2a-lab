@@ -11,6 +11,8 @@ dependencies = [
     "google-adk",  # For ADK agent functionality
     "python-dotenv",  # For environment variable management
     "litellm",  # For LLM integration
+    "pytz",  # For timezone handling
+    "ipykernel",
 ]
 
 [tool.hatch.build.targets.wheel]
