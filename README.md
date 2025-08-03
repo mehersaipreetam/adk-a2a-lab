@@ -50,10 +50,6 @@ src/
 └── my_a2a/          # A2A Implementation 
 ```
 
-### Available Examples
-- Simple Sentiment Analysis Agent
-- Stateful Expense Manager Agent
-
 ## Understanding ADK
 
 ### Core Building Blocks
