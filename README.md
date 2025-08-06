@@ -1,8 +1,14 @@
 # Agent Development Kit (ADK) and Agent-to-Agent (A2A) Lab
 
 This repository serves as a learning lab for two key technologies:
-1. Google's Agent Development Kit (ADK)
-2. Agent-to-Agent (A2A) Protocol
+1. Google's Agent Development Kit (ADK): Build intelligent agents
+2. Agent-to-Agent (A2A) Protocol: Make agents talk to each other
+
+## Overview
+
+This lab is structured in two parts:
+1. **ADK Implementation**: Learn to build standalone agents
+2. **A2A Implementation**: Learn to connect agents
 
 ## Quick Start
 
@@ -102,6 +108,44 @@ src/
    - Write clear instructions for your agent
    - Structure responses consistently
    - Handle errors gracefully
+
+## Part 2: Agent-to-Agent (A2A)
+
+### What is A2A?
+
+A2A is a protocol that enables agents to:
+- Discover each other's capabilities
+- Exchange messages in a standardized way
+- Work together to solve complex tasks
+
+### Simple A2A Implementation
+
+Our current implementation shows the basics of A2A:
+
+1. **Agent Card**
+   - Like a business card for your agent
+   - Lists what your agent can do
+   - Helps other agents understand its capabilities
+
+2. **Message Exchange**
+   - Standardized message format
+   - Request/response pattern
+   - Structured data exchange
+
+### Running the Simple A2A Example
+
+1. Start the server from root directory:
+```bash
+python src/my_a2a/simple_a2a/main.py
+```
+
+2. View the agent card at http://0.0.0.0:9999/.well-known/agent.json
+
+3. Test the agent:
+   - Use the included client script
+   - Or send requests via API
+
+More advanced A2A features coming soon!
 
 ## Contributing
 

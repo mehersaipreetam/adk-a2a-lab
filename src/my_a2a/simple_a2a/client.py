@@ -6,10 +6,8 @@ from a2a.client.client_factory import ClientFactory
 from a2a.types import (
     AgentCard,
     Message,
-    MessageSendParams,
     Part,
     Role,
-    SendMessageRequest,
     TextPart,
 )
 from a2a.client.client import ClientConfig

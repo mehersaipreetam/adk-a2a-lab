@@ -13,7 +13,7 @@ dependencies = [
     "litellm",  # For LLM integration
     "pytz",  # For timezone handling
     "ipykernel", # For Jupyter kernel support
-    "a2a",  # For Agent-to-Agent communication
+    "a2a-sdk",  # For Agent-to-Agent communication
 ]
 
 [tool.hatch.build.targets.wheel]
