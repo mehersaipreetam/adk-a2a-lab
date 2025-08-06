@@ -12,7 +12,8 @@ dependencies = [
     "python-dotenv",  # For environment variable management
     "litellm",  # For LLM integration
     "pytz",  # For timezone handling
-    "ipykernel",
+    "ipykernel", # For Jupyter kernel support
+    "a2a",  # For Agent-to-Agent communication
 ]
 
 [tool.hatch.build.targets.wheel]
