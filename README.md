@@ -109,7 +109,7 @@ src/
    - Structure responses consistently
    - Handle errors gracefully
 
-## Part 2: Agent-to-Agent (A2A)
+## Part 2: Getting Started with A2A
 
 ### What is A2A?
 
