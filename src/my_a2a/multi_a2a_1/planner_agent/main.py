@@ -10,7 +10,7 @@ from a2a.server.tasks import InMemoryTaskStore  # Stores task states temporarily
 from a2a.types import AgentCapabilities, AgentCard, AgentSkill
 
 # Our custom agent implementation
-from my_a2a.multi_a2a.agents.planner_agent.agent_executor import PlannerAgentExecutor
+from my_a2a.multi_a2a_1.planner_agent.agent_executor import PlannerAgentExecutor
 
 
 def main():
@@ -29,8 +29,8 @@ def main():
         description="Return the a plan given a user query",
         tags=["planner", "text"],
         examples=[
-            { "agent": "<agent1>", "input": "I love Groq models!" },
-            { "agent": "<agent2>", "input": "I love Groq models!" }
+            "Need sentiment of the text 'The weather is great today!'",
+            "Give me complete NLP analysis for 'I love programming!'",
         ],
     )
 
@@ -39,7 +39,7 @@ def main():
     agent_card = AgentCard(
         name="Planner Agent Executor Agent",  # Agent's name
         description="A plannner agent that returns a plan given a user query.",
-        url="http://localhost:5001/",     # Where to find this agent
+        url="http://localhost:8001/",     # Where to find this agent
         defaultInputModes=["text"],       # What input we accept
         defaultOutputModes=["list"],      # What output we provide
         skills=[skill],                   # What we can do
@@ -61,7 +61,7 @@ def main():
         agent_card=agent_card,        # Exposes our capabilities
     )
 
-    uvicorn.run(server.build(), host="0.0.0.0", port=5001)
+    uvicorn.run(server.build(), host="0.0.0.0", port=8001)
 
 
 if __name__ == "__main__":

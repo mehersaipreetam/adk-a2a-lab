@@ -31,10 +31,4 @@ async def litellm_complete(prompt: str):
         )
     ):
         content += chunk.content.parts[0].text
-    # response = await model.generate_content_async(
-    #     llm_request=LlmRequest(
-    #         model="groq/llama3-8b-8192",
-    #         contents=[types.Content(parts=[types.Part(text=prompt)], role="user")]
-    #     )
-    # )
     return content
