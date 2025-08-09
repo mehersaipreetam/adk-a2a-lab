@@ -6,14 +6,16 @@ build-backend = "hatchling.build"
 name = "adk_a2a_lab"
 version = "0.1.0"
 description = "ADK Agent-to-Agent Lab with sentiment analysis capabilities"
-requires-python = ">=3.8"
+requires-python = ">=3.13"
 dependencies = [
-    "google-adk",  # For ADK agent functionality
-    "python-dotenv",  # For environment variable management
-    "litellm",  # For LLM integration
-    "pytz",  # For timezone handling
-    "ipykernel", # For Jupyter kernel support
-    "a2a-sdk",  # For Agent-to-Agent communication
+    "a2a-sdk",
+    "google-adk",
+    "ipykernel",
+    "langchain",
+    "litellm==1.75.3",
+    "litellm[proxy]",
+    "python-dotenv",
+    "pytz",
 ]
 
 [tool.hatch.build.targets.wheel]

@@ -1,1 +1,1 @@
-from .agent import expense_manager_agent
+from .agent import agent
