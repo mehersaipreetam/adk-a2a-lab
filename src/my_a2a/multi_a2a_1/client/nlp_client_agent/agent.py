@@ -54,21 +54,32 @@ class Client:
         if self.agents_info is None:
             self.agents_info = await self.get_all_agent_cards()
         prompt = f"""
-        You are the Host Agent responsible for orchestrating NLP tasks by delegating them 
-        to specialized sub-agents.
+            You are the Host Agent responsible for orchestrating NLP tasks by delegating them 
+            to specialized sub-agents. You must perform all delegations using the `send_message` tool.  
 
-        1. If query is a greeting, send to Greeting Agent.
-        2. Otherwise, send to Planner Agent to break into subtasks.
-        3. Execute subtasks via appropriate agents.
-        4. Return final aggregated response.
+            Rules for orchestration:
+            1. If the query is a greeting (e.g., "hi", "hello", "good morning"), call `send_message` with:
+            - `agent_name` = "greeting"
+            - `content` = the original user query
+            2. Otherwise:
+            a. First, call `send_message` with:
+                - `agent_name` = "planner"
+                - `content` = the original user query  
+                This will return a structured plan containing subtasks.
+            b. For each subtask in the returned plan, call `send_message` with:
+                - `agent_name` = the agent specified for that subtask
+                - `content` = the subtask's input text
+            3. Aggregate all subtask results into a single coherent final response.
+            4. Return this final aggregated response to the user.
 
-        Available Agents: {self.agents_info}
+            Available Agents: {self.agents_info}
+
+            Never invoke agents directly. Always route calls through the `send_message` tool with the correct `agent_name`.
         """
-        print(prompt)
         return prompt
 
 
-async def __adk_init__():
+async def main_async():
     """ADK async initializer for root agent."""
     client = Client()
     instruction = await client.get_root_instruction()
@@ -82,4 +93,4 @@ async def __adk_init__():
 
 
 # ADK expects root_agent to be assigned like this:
-root_agent = asyncio.get_event_loop().run_until_complete(__adk_init__())
+root_agent = asyncio.run(main_async())
