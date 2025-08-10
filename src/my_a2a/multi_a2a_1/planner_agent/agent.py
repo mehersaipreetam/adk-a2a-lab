@@ -74,20 +74,3 @@ async def generate_plan(user_input: str, available_agents: List[str]) -> List[di
         return plan
     except json.JSONDecodeError:
         raise ValueError("Invalid JSON in plan response")
-
-
-# async def main():
-#     """Example usage of the planner"""
-#     user_request = "Find sentiment of 'LangChain is great' and extract named entities."
-#     available_agents = ["sentiment_agent", "pos_tag_agent", "topic_agent"]
-    
-#     try:
-#         plan = await generate_plan(user_request, available_agents)
-#         print("Generated Plan:")
-#         print(json.dumps(plan, indent=2))
-#     except ValueError as e:
-#         print(f"Error generating plan: {e}")
-
-
-# if __name__ == "__main__":
-#     asyncio.run(main())

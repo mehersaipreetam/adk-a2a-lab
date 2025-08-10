@@ -51,7 +51,7 @@ async def main():
 
         # Runner for NLP agent
         runner = Runner(
-            agent=root_agent,  # Import from your nlp_client_agent.agent
+            agent=root_agent,
             app_name="nlp_client_app",
             session_service=session_service_stateful,
         )

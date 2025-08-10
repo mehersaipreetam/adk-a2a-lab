@@ -5,7 +5,9 @@ from google.genai import types
 # Load environment variables from .env file
 load_dotenv()
 
-from google.adk.models.lite_llm import LiteLlm
+### Uncomment the following lines to use LiteLlm with Groq
+
+# from google.adk.models.lite_llm import LiteLlm
 # from google.adk.models.llm_request import LlmRequest
 # model = LiteLlm(
 #     model="groq/llama-3.1-8b-instant",

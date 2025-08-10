@@ -5,6 +5,7 @@ from a2a.client.client import ClientConfig
 from google.adk import Agent
 from my_a2a.llm.model import model
 
+# A2A Client class to interact with multiple agents
 class Client:
     def __init__(self):
         self.agent_registry = {
@@ -106,7 +107,7 @@ class Client:
 def main():
     """ADK async initializer for root agent."""
     client = Client()
-    # instruction = await client.get_root_instruction()
+    # instruction can be callable methods too, here it is the async client.get_root_instruction
     return Agent(
         model=model,
         name="nlp_client_agent",
