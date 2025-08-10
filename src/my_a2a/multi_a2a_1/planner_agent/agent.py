@@ -1,6 +1,7 @@
 import asyncio
 import json
 import os
+import re
 from typing import List
 
 from my_a2a.llm.model import llm_complete
@@ -54,7 +55,9 @@ async def generate_plan(user_input: str, available_agents: List[str]) -> List[di
         available_agents=agents_list
     )
     response = await llm_complete(prompt)
-    
+    pattern = r"^```json\n|```$"
+
+    response = re.sub(pattern, "", response, flags=re.MULTILINE).strip()    
     # Parse and validate the JSON response
     try:
         plan = json.loads(response.strip())

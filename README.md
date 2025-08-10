@@ -147,6 +147,10 @@ python src/my_a2a/simple_a2a/main.py
 
 More advanced A2A features coming soon!
 
+Demo:
+![Demo](demo/demo.gif)
+<video src="demo/demo.webm" controls></video>
+
 ## Contributing
 
 Feel free to:

@@ -1,13 +1,16 @@
 # A2A components for agent execution
-from a2a.server.agent_execution import AgentExecutor  # Base class for agent executors
-from a2a.server.agent_execution.context import RequestContext  # Handles request data
-from a2a.server.events.event_queue import EventQueue  # Manages message events
-from a2a.utils import new_agent_text_message  # Helper for creating responses
+import re
+from a2a.server.agent_execution import AgentExecutor
+from a2a.server.agent_execution.context import RequestContext
+from a2a.server.events.event_queue import EventQueue
+from a2a.utils import new_agent_parts_message
+from a2a.server.tasks import TaskUpdater
+from a2a.types import TaskState, Part, TextPart # Import new types
 
 # ADK components for running the sentiment agent
-from google.adk.runners import Runner  # Executes agent logic
-from google.adk.sessions import InMemorySessionService  # Manages agent state
-from google.genai import types  # Structures for LLM communication
+from google.adk.runners import Runner
+from google.adk.sessions import InMemorySessionService
+from google.genai import types
 
 # Import our pre-configured sentiment analysis agent
 from my_adk.simple_agent.sentiment_agent.agent import agent as sentiment_agent
@@ -21,11 +24,6 @@ class SentimentAgentExecutor(AgentExecutor):
     1. Receives requests from other agents via A2A protocol
     2. Processes them using our ADK-based sentiment agent
     3. Returns results in A2A-compatible format
-    
-    Key Components:
-    - agent: Our ADK sentiment analysis agent
-    - session_service: Manages conversation state (simple in this case)
-    - app_name/user_id/session_id: Identifies this agent instance
     """
     
     def __init__(self):
@@ -36,26 +34,23 @@ class SentimentAgentExecutor(AgentExecutor):
         self.session_service = InMemorySessionService()
         
         # Identifiers for this agent instance
-        self.app_name = "sentiment_analysis_app"  # Application identifier
-        self.user_id = "default_user"            # Single user for all requests
-        self.session_id = "default_session"      # Single session (stateless)
+        self.app_name = "sentiment_analysis_app"
+        self.user_id = "default_user"
+        self.session_id = "default_session"
         
     async def execute(self, context: RequestContext, event_queue: EventQueue):
         """
          Processes incoming A2A requests through our sentiment analysis agent.
-        
-        Flow:
-        1. Create/get session for request handling
-        2. Extract text from incoming request
-        3. Process text through ADK agent
-        4. Return sentiment analysis result
-        
-        Args:
-            context: Contains the incoming request details (like input text)
-            event_queue: For sending responses back to the requesting agent
         """
+        # Create a task updater to manage the task's state
+        updater = TaskUpdater(event_queue, context.task_id, context.context_id)
+
+        # Update the task status to reflect the current state
+        if not context.current_task:
+            await updater.update_status(TaskState.submitted)
+        await updater.update_status(TaskState.working)
+
         # Initialize or get existing session
-        # For our stateless agent, we create a new session each time
         current_session = await self.session_service.create_session(
             app_name=self.app_name,
             user_id=self.user_id,
@@ -68,10 +63,9 @@ class SentimentAgentExecutor(AgentExecutor):
         user_input_text = context.get_user_input()
 
         # Format the input for our ADK agent
-        # ADK expects a specific message structure
         content = types.Content(
-            role="user",  # Message comes from another agent
-            parts=[types.Part(text=user_input_text)]  # The text to analyze
+            role="user",
+            parts=[types.Part(text=user_input_text)]
         )
 
         # Set up the ADK runner to process our request
@@ -81,31 +75,39 @@ class SentimentAgentExecutor(AgentExecutor):
             session_service=self.session_service,
         )
 
-        # Will store the final sentiment result
         final_response_text = None
 
-        # Process the request through our ADK agent
-        # run_async yields a stream of events as processing happens
         async for event in runner.run_async(
-            user_id=self.user_id,      # Who's making the request
-            session_id=self.session_id, # Which conversation this belongs to
-            new_message=content,        # The text to analyze
+            user_id=self.user_id,
+            session_id=self.session_id,
+            new_message=content,
         ):
-            # We only care about the final sentiment result
-            # (could handle intermediate events for streaming responses)
             if event.is_final_response():
                 if event.content and event.content.parts:
+                    # Capture the full response text, which might include markdown fences
                     final_response_text = event.content.parts[0].text
                 break
 
         # Handle the response
         if final_response_text is not None:
-            # Create and send an A2A-compatible message with the result
-            # This will be received by the requesting agent
+            # Use a regex to clean the text from any JSON markdown fences
+            pattern = r"^```json\n|```$"
+            cleaned_json_string = re.sub(pattern, "", final_response_text, flags=re.MULTILINE).strip()
+
+            # Create a structured message using A2A parts
+            # Since the response is expected to be a JSON string, we create a TextPart
+            # and wrap it in a Part object to conform to the A2A message structure.
+            text_part = TextPart(text=cleaned_json_string)
+            parts = [Part(root=text_part)]
+
             await event_queue.enqueue_event(
-                new_agent_text_message(final_response_text)
+                new_agent_parts_message(parts)
             )
+            
+            # Mark the task as completed
+            await updater.update_status(TaskState.completed, final=True)
         else:
+            await updater.update_status(TaskState.failed, final=True)
             raise RuntimeError("No final response received from the agent.")
 
 

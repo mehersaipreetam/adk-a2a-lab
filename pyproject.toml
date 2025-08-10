@@ -9,13 +9,14 @@ description = "ADK Agent-to-Agent Lab with sentiment analysis capabilities"
 requires-python = ">=3.13"
 dependencies = [
     "a2a-sdk",
-    "google-adk",
+    "google-adk==1.10.0",
     "ipykernel",
     "langchain",
     "litellm==1.75.3",
     "litellm[proxy]",
     "python-dotenv",
     "pytz",
+    "langgraph",
 ]
 
 [tool.hatch.build.targets.wheel]

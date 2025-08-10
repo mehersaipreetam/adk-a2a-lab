@@ -5,14 +5,15 @@ import httpx
 from a2a.client import ClientFactory, A2ACardResolver
 from a2a.client.client import ClientConfig
 from google.adk import Agent
-from my_a2a.llm import model
+from my_a2a.llm.model import model
 
 class Client:
     def __init__(self):
         self.agent_registry = {
             "planner": "http://localhost:8001/",
             "greeting": "http://localhost:8002/",
-            "sentiment": "http://localhost:8003/"
+            "sentiment": "http://localhost:8003/",
+            "pos": "http://localhost:8004/"
         }
         self.agents_info = None
     
@@ -27,40 +28,6 @@ class Client:
         async with httpx.AsyncClient() as httpx_client:
             resolver = A2ACardResolver(httpx_client=httpx_client, base_url=url)
             return await resolver.get_agent_card()
-
-    # async def send_message(self, agent_name: str, task: str):
-    #     agent_card = self.agents_info[agent_name]
-    #     message_payload = {
-    #         "role": "user",
-    #         "kind": "message",
-    #         "message_id": str(uuid.uuid4()),
-    #         "parts": [
-    #             {
-    #                 "kind": "text",
-    #                 "text": task
-    #             }
-    #         ]
-    #     }
-    #     response = await self.send_message_payload(agent_card, message_payload)
-    #     print(f"Response from {agent_name} agent: {response}")
-    #     return response
-
-    # async def send_message_payload(self, agent_card, message_payload):
-    #     async with httpx.AsyncClient() as httpx_client:
-    #         client = ClientFactory(config=ClientConfig(httpx_client=httpx_client)).create(agent_card)
-            
-    #         # Use a list to accumulate all text parts
-    #         accumulated_text = []
-
-    #         async for response in client.send_message(request=message_payload):
-    #             json_content = response.model_dump(exclude_none=True)
-    #             if json_content.get("kind", "") == "message":
-    #                 for part in json_content.get("parts", []):
-    #                     if part.get("kind", "") == "text":
-    #                         accumulated_text.append(part["text"])
-
-    #         # Join the list of strings into a single response
-    #         return " ".join(accumulated_text)
     
     async def send_message(self, agent_name: str, task: str):
         agent_card = self.agents_info[agent_name]
@@ -122,7 +89,7 @@ class Client:
         2. Otherwise:
         a. First, call `send_message` tool with:
             - `agent_name` = "planner"
-            - `content` = the original user query  
+            - `content` = A JSON string with two keys: "user_input" (value is the original user query) and "available_agents" (value is a list of agent names from the `Available Agents` section).  
             This will return a structured plan containing subtasks.
         b. For each subtask in the returned plan, call `send_message` tool with:
             - `agent_name` = the agent specified for that subtask

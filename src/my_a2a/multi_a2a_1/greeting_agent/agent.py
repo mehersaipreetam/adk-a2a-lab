@@ -1,6 +1,6 @@
 from google.adk import Agent
 
-from my_a2a.llm import model
+from my_a2a.llm.model import model
 
 # Define the Greeting Agent
 greeting_agent = Agent(

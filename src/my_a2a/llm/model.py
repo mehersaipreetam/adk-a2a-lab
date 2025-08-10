@@ -6,7 +6,7 @@ from google.genai import types
 load_dotenv()
 
 from google.adk.models.lite_llm import LiteLlm
-from google.adk.models.llm_request import LlmRequest
+# from google.adk.models.llm_request import LlmRequest
 # model = LiteLlm(
 #     model="groq/llama-3.1-8b-instant",
 #     api_key=os.getenv("GROQ_API_KEY"),
