@@ -149,7 +149,6 @@ More advanced A2A features coming soon!
 
 Demo:
 ![Demo](demo/demo.gif)
-[Watch demo](demo/demo.webm)
 
 ## Contributing
 
