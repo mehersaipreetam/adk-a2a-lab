@@ -31,6 +31,14 @@ export GROQ_API_KEY='your-groq-api-key'
 ```
 Make sure to update `llm/model.py` (within `src/my_adk` and `src/my_a2a`) to integrate your preferred LLM model.
 
+#s## Repository Structure
+
+```
+src/
+├── my_adk/          # ADK Implementation 
+└── my_a2a/          # A2A Implementation 
+```
+
 ## Part 1: Getting Started with ADK
 
 ### What is ADK?
@@ -47,14 +55,6 @@ ADK (Agent Development Kit) is Google's framework for building AI agents. Think 
 - **Structured Interactions**: Clear patterns for handling user inputs and agent responses
 - **Production Ready**: Designed for both prototypes and production systems
 - **Extensible**: Easy to customize and expand functionality
-
-## Repository Structure
-
-```
-src/
-├── my_adk/          # ADK Implementation 
-└── my_a2a/          # A2A Implementation 
-```
 
 ## Understanding ADK
 
