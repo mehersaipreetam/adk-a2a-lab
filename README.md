@@ -31,7 +31,7 @@ export GROQ_API_KEY='your-groq-api-key'
 ```
 Make sure to update `llm/model.py` (within `src/my_adk` and `src/my_a2a`) to integrate your preferred LLM model.
 
-#s## Repository Structure
+### Repository Structure
 
 ```
 src/
