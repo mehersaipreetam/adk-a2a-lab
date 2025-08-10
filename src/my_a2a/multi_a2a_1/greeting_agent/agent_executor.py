@@ -55,7 +55,6 @@ class GreetingAgentExecutor(AgentExecutor):
 
         final_response_text = None
 
-        # Process message through the Greeting Agent
         async for event in runner.run_async(
             user_id=self.user_id,
             session_id=self.session_id,
@@ -65,6 +64,7 @@ class GreetingAgentExecutor(AgentExecutor):
                 if event.content and event.content.parts:
                     final_response_text = event.content.parts[0].text
                 break
+        print("Final response from Greeting Agent:", final_response_text)
 
         if final_response_text:
             await event_queue.enqueue_event(

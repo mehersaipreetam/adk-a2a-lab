@@ -3,7 +3,7 @@ import json
 import os
 from typing import List
 
-from my_a2a.llm.model import litellm_complete
+from my_a2a.llm.model import llm_complete
 from langchain.prompts import ChatPromptTemplate
 
 planner_prompt = ChatPromptTemplate.from_template("""
@@ -53,7 +53,7 @@ async def generate_plan(user_input: str, available_agents: List[str]) -> List[di
         user_input=user_input,
         available_agents=agents_list
     )
-    response = await litellm_complete(prompt)
+    response = await llm_complete(prompt)
     
     # Parse and validate the JSON response
     try:
