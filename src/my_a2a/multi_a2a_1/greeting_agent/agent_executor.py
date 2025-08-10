@@ -3,6 +3,8 @@ from a2a.server.agent_execution import AgentExecutor
 from a2a.server.agent_execution.context import RequestContext
 from a2a.server.events.event_queue import EventQueue
 from a2a.utils import new_agent_text_message
+from a2a.server.tasks import TaskUpdater
+from a2a.types import TaskState
 
 # ADK components
 from google.adk.runners import Runner
@@ -35,8 +37,10 @@ class GreetingAgentExecutor(AgentExecutor):
             user_id=self.user_id,
             session_id=self.session_id
         )
-        print(f"Session {current_session.id} created.")
-
+        updater = TaskUpdater(event_queue, context.task_id, context.context_id)
+        if not context.current_task:
+            await updater.update_status(TaskState.submitted)
+        await updater.update_status(TaskState.working)
         # Extract user input from the incoming request
         user_input_text = context.get_user_input()
 
@@ -64,11 +68,13 @@ class GreetingAgentExecutor(AgentExecutor):
                 if event.content and event.content.parts:
                     final_response_text = event.content.parts[0].text
                 break
-        print("Final response from Greeting Agent:", final_response_text)
 
         if final_response_text:
             await event_queue.enqueue_event(
                 new_agent_text_message(final_response_text)
+            )
+            await updater.update_status(
+                TaskState.completed, final=True
             )
         else:
             raise RuntimeError("No final response from Greeting Agent.")

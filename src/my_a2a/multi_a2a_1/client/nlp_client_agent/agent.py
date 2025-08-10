@@ -28,6 +28,40 @@ class Client:
             resolver = A2ACardResolver(httpx_client=httpx_client, base_url=url)
             return await resolver.get_agent_card()
 
+    # async def send_message(self, agent_name: str, task: str):
+    #     agent_card = self.agents_info[agent_name]
+    #     message_payload = {
+    #         "role": "user",
+    #         "kind": "message",
+    #         "message_id": str(uuid.uuid4()),
+    #         "parts": [
+    #             {
+    #                 "kind": "text",
+    #                 "text": task
+    #             }
+    #         ]
+    #     }
+    #     response = await self.send_message_payload(agent_card, message_payload)
+    #     print(f"Response from {agent_name} agent: {response}")
+    #     return response
+
+    # async def send_message_payload(self, agent_card, message_payload):
+    #     async with httpx.AsyncClient() as httpx_client:
+    #         client = ClientFactory(config=ClientConfig(httpx_client=httpx_client)).create(agent_card)
+            
+    #         # Use a list to accumulate all text parts
+    #         accumulated_text = []
+
+    #         async for response in client.send_message(request=message_payload):
+    #             json_content = response.model_dump(exclude_none=True)
+    #             if json_content.get("kind", "") == "message":
+    #                 for part in json_content.get("parts", []):
+    #                     if part.get("kind", "") == "text":
+    #                         accumulated_text.append(part["text"])
+
+    #         # Join the list of strings into a single response
+    #         return " ".join(accumulated_text)
+    
     async def send_message(self, agent_name: str, task: str):
         agent_card = self.agents_info[agent_name]
         message_payload = {
@@ -41,23 +75,33 @@ class Client:
                 }
             ]
         }
-        response = await self.send_message_payload(agent_card, message_payload)
-        print(f"Response from {agent_name} agent: {response}")
-        return response
+        
+        # This now returns the full structured message
+        response_content = await self.send_message_payload(agent_card, message_payload)
+
+        # Process the structured response to extract useful information
+        final_response_text = ""
+        if response_content and response_content.get("kind") == "message":
+            for part in response_content.get("parts", []):
+                if part.get("kind") == "text":
+                    final_response_text += part.get("text", "") + " "
+        
+        print(f"Response from {agent_name} agent: {final_response_text.strip()}")
+        return final_response_text.strip()
 
     async def send_message_payload(self, agent_card, message_payload):
         async with httpx.AsyncClient() as httpx_client:
             client = ClientFactory(config=ClientConfig(httpx_client=httpx_client)).create(agent_card)
-            responses = []
+            
+            # This variable will hold the final, complete message content
+            final_response_content = None
+
             async for response in client.send_message(request=message_payload):
-                json_content = response.model_dump(exclude_none=True)
-                resp = []
-                if json_content.get("result", {}).get("artifacts"):
-                    for artifact in json_content["result"]["artifacts"]:
-                        if artifact.get("parts"):
-                            resp.extend(artifact["parts"])
-                responses.append(resp)
-            return responses
+                # Update with the latest response in the stream
+                final_response_content = response.model_dump(exclude_none=True)
+            
+            # Return the final structured message
+            return final_response_content
 
     async def get_root_instruction(self, ctx):
         if self.agents_info is None:
@@ -74,6 +118,7 @@ class Client:
         1. If the query is a greeting (e.g., "hi", "hello", "good morning"), call `send_message` tool with:
         - `agent_name` = "greeting"
         - `content` = the original user query
+        Respond to user with the greeting agent's response directly. This is the only case where you respond directly without further processing.
         2. Otherwise:
         a. First, call `send_message` tool with:
             - `agent_name` = "planner"

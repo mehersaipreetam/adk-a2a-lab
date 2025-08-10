@@ -14,6 +14,9 @@ class PlannerAgentExecutor(AgentExecutor):
     def __init__(self):        
         # Simple in-memory session (no persistence needed for stateless agent)
         self.session_service = InMemorySessionService()
+        self.app_name = "planner_app"
+        self.user_id = "default_user"
+        self.session_id = "default_session"
 
     async def execute(self, context: RequestContext, event_queue: EventQueue):
         current_session = await self.session_service.create_session(
