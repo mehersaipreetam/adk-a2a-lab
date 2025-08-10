@@ -149,7 +149,7 @@ More advanced A2A features coming soon!
 
 Demo:
 ![Demo](demo/demo.gif)
-<video src="demo/demo.webm" controls></video>
+[Watch demo](demo/demo.webm)
 
 ## Contributing
 
