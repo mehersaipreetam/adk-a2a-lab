@@ -118,6 +118,14 @@ A2A is a protocol that enables agents to:
 - Exchange messages in a standardized way
 - Work together to solve complex tasks
 
+### Why A2A?
+A2A provides a flexible and scalable way to build complex workflows by breaking them down into smaller, manageable components. This approach enables:
+
+- Modularity: Agents can be developed and tested independently, reducing the complexity of the overall workflow.
+- Reusability: Agents can be reused across different workflows, reducing development time and effort.
+- Scalability: Workflows can be easily extended or modified by adding or removing agents.
+
+
 ### Simple A2A Implementation
 
 Our current implementation shows the basics of A2A:
@@ -145,9 +153,86 @@ python src/my_a2a/simple_a2a/main.py
    - Use the included client script
    - Or send requests via API
 
-More advanced A2A features coming soon!
+## Multi A2A Implementation
 
-Demo:
+### What is a Client in A2A?
+In the context of **Agent-to-Agent (A2A)** systems, a **client** is the entry point that interacts with your multi-agent setup.  
+It is responsible for:
+- **Initiating requests**: Sending queries, commands, or data to A2A agents.
+- **Receiving responses**: Collecting the output from agents after the orchestration and task execution.
+- **Abstracting complexity**: Allowing external systems or users to interact with the multi-agent architecture without worrying about internal communication flows.
+
+Think of it as the *“remote control”* for your multi-agent framework - you don’t need to open the TV and touch the circuits, you just send a signal and get results.
+
+### Building an A2A-Compliant Agent
+
+When developing an agent for an A2A (Agent-to-Agent) setup, there are three main components to consider:  
+
+#### 1. Agent Logic
+The **core agent logic** is the intellectual engine of your service. This part is **framework-agnostic** and contains the essential functions that perform your agent's task.  
+It can be:
+- A simple Python function
+- A complex machine learning model
+- A database query
+- A tool-powered workflow (e.g., LangChain, LangGraph)
+
+Key principle: **It should only focus on its task** and remain unaware of A2A protocol specifics.
+
+#### 2. The A2A-Compliant Agent Executor
+The **Agent Executor** acts as the bridge between the A2A runtime and your core agent logic.  
+Its role is to:
+- Receive incoming **A2A requests**  
+- Manage **task state** and **lifecycle**
+- Convert A2A request format into your internal logic’s expected format  
+- Run your agent logic
+- Convert results back → A2A-compliant response
+
+**To be A2A-compliant**, it must:
+- Inherit from the `AgentExecutor` base class  
+- Override two core methods:
+  - **`execute(self, context: RequestContext, event_queue: EventQueue)`**  
+    Handles the entire request lifecycle - input parsing, logic execution, and sending the final response.  
+  - **`cancel(self, context: RequestContext, event_queue: EventQueue)`**  
+    Handles cancellation requests for long-running tasks.  
+    If not applicable, raise `NotImplementedError`.
+
+#### 3. Main Entry Script (`main.py`)
+The **main script** packages everything and launches the agent as a live service.
+
+It must:
+- **Define the Agent Card**: The agent’s “business card” - name, description, and capabilities.
+- **Bind the Executor**: Ensures incoming requests are processed by your executor.
+- **Start the A2A server**: Makes the agent discoverable and callable by other agents.
+
+
+### This Repository
+This repo demonstrates a **multi-A2A implementation** for NLP tasks:
+- **Sentiment Analysis Agent**
+- **POS Tagging Agent**
+- **Planner Agent** (orchestrates workflow)
+- **Greeting Agent** (simple conversation starter)
+
+It creates an **end-to-end workflow**, where the planner delegates tasks to the appropriate NLP agents, and all agents communicate via A2A. To highlight its framework-agnostic design, the current setup includes agents built with ADK, LangChain, and LangGraph. Additional agents can be seamlessly integrated into the service following the same approach.
+
+### Running the Multi A2A Example
+1. Start each agent individually:
+   - `greeting_agent`
+   - `pos_tag_agent`
+   - `sentiment_agent`
+   - `planner_agent`  
+   ```bash
+   cd src/my_a2a/multi_a2a_1/<agent_name>
+   python main.py
+   ```
+2. Start the client using adk web client:
+   ```bash
+   cd src/my_a2a/multi_a2a_1/client
+   adk web
+   ```
+
+3. Open the provided ADK Web URL in your browser.
+
+#### Demo:
 ![Demo](demo/demo.gif)
 
 ## Contributing
