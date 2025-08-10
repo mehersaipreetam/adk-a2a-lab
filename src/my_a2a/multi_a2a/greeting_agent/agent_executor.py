@@ -12,7 +12,7 @@ from google.adk.sessions import InMemorySessionService
 from google.genai import types
 
 # Import our pre-configured greeting agent
-from my_a2a.multi_a2a_1.greeting_agent import greeting_agent  
+from my_a2a.multi_a2a.greeting_agent import greeting_agent  
 
 class GreetingAgentExecutor(AgentExecutor):
     """

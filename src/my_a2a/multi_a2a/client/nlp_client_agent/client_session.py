@@ -1,5 +1,5 @@
 # Import the root NLP agent
-from my_a2a.multi_a2a_1.client.nlp_client_agent.agent import root_agent
+from my_a2a.multi_a2a.client.nlp_client_agent.agent import root_agent
 
 # Core ADK components
 from google.adk.sessions import InMemorySessionService

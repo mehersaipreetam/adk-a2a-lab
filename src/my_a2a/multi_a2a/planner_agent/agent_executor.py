@@ -10,7 +10,7 @@ from a2a.types import TaskState, Part, TextPart
 # ADK components for running the sentiment agent
 from google.adk.sessions import InMemorySessionService
 
-from my_a2a.multi_a2a_1.planner_agent.agent import generate_plan
+from my_a2a.multi_a2a.planner_agent.agent import generate_plan
 
 class PlannerAgentExecutor(AgentExecutor):
     def __init__(self):        

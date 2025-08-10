@@ -6,7 +6,7 @@ from a2a.server.tasks import TaskUpdater
 from a2a.utils import new_agent_parts_message
 from a2a.types import TaskState, Part, TextPart
 from typing import TypedDict, List
-from my_a2a.multi_a2a_1.pos_tag_agent.agent import app
+from my_a2a.multi_a2a.pos_tag_agent.agent import app
 
 class AgentState(TypedDict):
     """Represents the state of our graph."""

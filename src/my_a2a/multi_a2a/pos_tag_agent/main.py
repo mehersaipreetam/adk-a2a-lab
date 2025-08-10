@@ -10,7 +10,7 @@ from a2a.server.tasks import InMemoryTaskStore
 from a2a.types import AgentCapabilities, AgentCard, AgentSkill
 
 # Our custom agent implementation
-from my_a2a.multi_a2a_1.pos_tag_agent.agent_executor import PosTagAgentExecutor
+from my_a2a.multi_a2a.pos_tag_agent.agent_executor import PosTagAgentExecutor
 
 
 def main():

@@ -7,8 +7,8 @@ This repository serves as a learning lab for two key technologies:
 ## Overview
 
 This lab is structured in two parts:
-1. **ADK Implementation**: Learn to build standalone agents
-2. **A2A Implementation**: Learn to connect agents
+1. **ADK Implementation**: Learn to build standalone agents (Path `src/my_adk`)
+2. **A2A Implementation**: Learn to connect agents (Path `src/my_adk`)
 
 ## Quick Start
 
@@ -221,12 +221,12 @@ It creates an **end-to-end workflow**, where the planner delegates tasks to the 
    - `sentiment_agent`
    - `planner_agent`  
    ```bash
-   cd src/my_a2a/multi_a2a_1/<agent_name>
+   cd src/my_a2a/multi_a2a/<agent_name>
    python main.py
    ```
 2. Start the client using adk web client:
    ```bash
-   cd src/my_a2a/multi_a2a_1/client
+   cd src/my_a2a/multi_a2a/client
    adk web
    ```
 

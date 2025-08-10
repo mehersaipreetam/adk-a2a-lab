@@ -10,7 +10,7 @@ from a2a.server.tasks import InMemoryTaskStore  # Stores task states temporarily
 from a2a.types import AgentCapabilities, AgentCard, AgentSkill
 
 # Our custom agent implementation
-from my_a2a.multi_a2a_1.planner_agent.agent_executor import PlannerAgentExecutor
+from my_a2a.multi_a2a.planner_agent.agent_executor import PlannerAgentExecutor
 
 
 def main():
