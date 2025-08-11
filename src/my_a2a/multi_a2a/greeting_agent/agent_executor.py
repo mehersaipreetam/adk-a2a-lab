@@ -31,7 +31,7 @@ class GreetingAgentExecutor(AgentExecutor):
         self.session_id = "default_session"
 
     async def execute(self, context: RequestContext, event_queue: EventQueue):
-        # Always create a session (stateless, so same IDs)
+        # Create a session (stateless, so same IDs)
         current_session = await self.session_service.create_session(
             app_name=self.app_name,
             user_id=self.user_id,
